@@ -5,6 +5,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { addMonths, subMonths, format } from "date-fns";
 import { useTheme } from "styled-components";
 import { VictoryPie } from "victory-native";
+import { useAuth } from "../../hooks/auth";
 import { ptBR } from "date-fns/locale";
 
 import HistoryCard from "../../components/HistoryCard";
@@ -45,6 +46,7 @@ interface CategoryData {
 
 const Resume: React.FC = () => {
   const theme = useTheme();
+  const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -52,7 +54,7 @@ const Resume: React.FC = () => {
     []
   );
 
-  function handleChangeDate(action: "next" | "prev") {    
+  function handleChangeDate(action: "next" | "prev") {
     if (action === "next") {
       setSelectedDate(addMonths(selectedDate, 1));
     } else {
@@ -62,7 +64,7 @@ const Resume: React.FC = () => {
 
   async function loadData() {
     setIsLoading(true);
-    const dataKey = "@gofinances:transactions";
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
@@ -165,7 +167,7 @@ const Resume: React.FC = () => {
                   fontSize: RFValue(18),
                   fontWeight: "bold",
                   fill: theme.colors.shape,
-                  padding: -60
+                  padding: -60,
                 },
               }}
             />
