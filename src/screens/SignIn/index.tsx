@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
+import { Alert } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 
 import AppleSvg from "../../assets/apple.svg";
@@ -19,7 +20,23 @@ import {
 } from "./styles";
 
 const SignIn: React.FC = () => {
-  const data = useAuth();
+  const { signInWithGoogle, signInWithApple } = useAuth();
+
+  async function handleSignInWithGoogle() {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      Alert.alert("Não foi possivel conectar a conta google");
+    }
+  }
+
+  async function handleSignInWithApple() {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      Alert.alert("Não foi possivel conectar a conta google");
+    }
+  }
 
   return (
     <Container>
@@ -39,8 +56,20 @@ const SignIn: React.FC = () => {
 
       <Footer>
         <FooterWrapper>
-          <SignInSocialButton title="Entrar com Google" svg={GoogleSvg} />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} />
+          <SignInSocialButton
+            title="Entrar com Google"
+            svg={GoogleSvg}
+            onPress={() => {
+              handleSignInWithGoogle();
+            }}
+          />
+          <SignInSocialButton
+            title="Entrar com Apple"
+            svg={AppleSvg}
+            onPress={() => {
+              handleSignInWithApple();
+            }}
+          />
         </FooterWrapper>
       </Footer>
     </Container>
